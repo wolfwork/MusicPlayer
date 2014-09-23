@@ -1,0 +1,11 @@
+Commands:
+
+/listsongs
+/reloadsongs
+/play
+/stop
+/playall
+/stopall
+/musicplayer [reload/list/disableSong/enableSong/disableMusic/enableMusic
+
+IMPORTANT: Stop all songs on onDisable();

@@ -1,0 +1,38 @@
+name: MusicPlayer
+author: President741
+version: 1.0
+depend: [NoteBlockAPI]
+
+main: de.music.player.Plugin
+
+commands:
+  musicplayer:
+    description: try this awesome command out!
+  stopsong:
+    description: Stops the actually running song
+  play:
+    description: Plays a song!
+  listsongs:
+    description: List all aviable songs
+
+permissions:
+  music.reloadsongs:
+    default: op
+  music.listsongs:
+    default: op
+  music.disablemusic:
+    default: op
+  music.enablemusic:
+    default: op
+  music.stopall:
+    default: op
+  music.playall:
+    default: op
+  music.play:
+    default: op
+  music.listsongs:
+    default: op
+  music.adminhelp:
+    default: op
+  music.userhelp:
+    default: op
