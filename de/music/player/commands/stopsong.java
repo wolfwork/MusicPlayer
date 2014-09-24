@@ -26,6 +26,7 @@ public class stopsong implements CommandExecutor {
 				if(Plugin.playing_songs.containsKey(p)){
 					Plugin.playing_songs.remove(p);
 				}
+				p.sendMessage(MessageManager.music_stopped);
 				return true;
 			}
 			p.sendMessage(MessageManager.error_no_music_to_stop);

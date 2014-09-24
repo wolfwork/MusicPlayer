@@ -27,5 +27,6 @@ public class MessageManager {
 	public static String music_disabled = "§cThe Music was disabled for the whole Server!";
 	public static String music_playing = "§aNow playing: %SONG%";
 	public static String music_all_songs = "§aAll Songs: ";
+	public static String music_stopped = "§cThe music stopped!";
 	
 }

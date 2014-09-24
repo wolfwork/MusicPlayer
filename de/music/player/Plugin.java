@@ -28,17 +28,21 @@ public class Plugin extends JavaPlugin {
 		destroyEvent = new DestroyEvent(this);
 		listed_songs = SongManager.loadAllSongs();
 		
-		this.getCommand("musicplayer").setExecutor(new musicplayer());
-		this.getCommand("listsongs").setExecutor(new listsongs());
-		this.getCommand("play").setExecutor(new play());
-		this.getCommand("stopsong").setExecutor(new stopsong());
+		loadcommands();
 		
 	}
-	
 	@Override
 	public void onDisable(){
 		for(Entry<Player, SongPlayer> songs : playing_songs.entrySet()){
 			SongManager.stopSong(songs.getKey());
 		}
+	}
+	
+	
+	private void loadcommands() {
+		this.getCommand("musicplayer").setExecutor(new musicplayer());
+		this.getCommand("listsongs").setExecutor(new listsongs());
+		this.getCommand("play").setExecutor(new play());
+		this.getCommand("stopsong").setExecutor(new stopsong());
 	}
 }

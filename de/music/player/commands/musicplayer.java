@@ -1,12 +1,16 @@
 package de.music.player.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
+import net.minecraft.server.v1_7_R4.ChatSerializer;
+import net.minecraft.server.v1_7_R4.IChatBaseComponent;
+import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.xxmicloxx.NoteBlockAPI.Song;
@@ -15,6 +19,7 @@ import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 import de.music.player.MessageManager;
 import de.music.player.Plugin;
 import de.music.player.SongManager;
+import de.music.player.methods.listSongs;
 
 public class musicplayer implements CommandExecutor {
 	
@@ -23,7 +28,6 @@ public class musicplayer implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cL, String[] args) {
 		
-//		reloadSongs / list / disableSong <song> / enableSong <song> / disableMusic / enableMusic / playall <song> / stopall
 		if(args.length == 1){
 //			reloadsongs / list / disableMusic / enableMusic / stopall
 			
@@ -114,13 +118,19 @@ public class musicplayer implements CommandExecutor {
 		sender.sendMessage(MessageManager.music_disabled);
 	}
 	public static void listSongs(CommandSender sender) {
+		List<Song> songs = listSongs.getList();
+		
 		sender.sendMessage(MessageManager.music_all_songs);
-		List<Song> song = new ArrayList<>();
-		for(Entry<Song, String> songs : Plugin.listed_songs.entrySet()){
-			song.add(songs.getKey());
-		}
-		for(int i = 0; i < song.size(); i++) {
-			sender.sendMessage("§a" + i + "§f: " + song.get(i).getTitle().replace(" ", "_"));
+		
+		for(int i = 0; i < songs.size(); i++){
+			if(sender instanceof Player){
+				Player p = (Player) sender;
+				IChatBaseComponent comp = ChatSerializer.a("{\"text\":\"\",\"extra\":[{\"text\":\"%SONG_ID%\",\"color\":\"green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}},{\"text\":\": %SONG_NAME%\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}}]}".replace("%SONG_NAME%", songs.get(i).getTitle()).replace("%SONG_ID%", i + ""));
+				PacketPlayOutChat packet = new PacketPlayOutChat(comp, true);
+				((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+			} else {
+				sender.sendMessage(i + ": " + songs.get(i).getTitle());
+			}
 		}
 	}
 	private void reloadSongs(CommandSender sender) {
