@@ -1,6 +1,6 @@
 name: MusicPlayer
 author: President741
-version: 1.0
+version: 1.0.2
 depend: [NoteBlockAPI]
 
 main: de.music.player.Plugin

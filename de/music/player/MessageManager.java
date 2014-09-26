@@ -29,4 +29,19 @@ public class MessageManager {
 	public static String music_all_songs = "§aAll Songs: ";
 	public static String music_stopped = "§cThe music stopped!";
 	
+	
+	public static void load(Plugin plugin) {
+		error_song_not_found = plugin.file_lang.getString("error.song.not_found").replace("&", "§");
+		error_music_disabled = plugin.file_lang.getString("error.music.disabled").replace("&", "§");
+		error_no_permissions = plugin.file_lang.getString("error.no_permissions").replace("&", "§");
+		error_no_music_to_stop = plugin.file_lang.getString("error.song.no_song_active").replace("&", "§");
+		error_music_already_playing = plugin.file_lang.getString("error.music.already_playing").replace("&", "§");
+		reload_songs = plugin.file_lang.getString("message.songs_reload").replace("&", "§");
+		music_enabled = plugin.file_lang.getString("message.songs_enabled").replace("&", "§");
+		music_disabled = plugin.file_lang.getString("message.songs_disabled").replace("&", "§");
+		music_playing = plugin.file_lang.getString("message.song_playing").replace("&", "§");
+		music_all_songs = plugin.file_lang.getString("message.list_songs").replace("&", "§");
+		music_stopped = plugin.file_lang.getString("message.song_stopped").replace("&", "§");
+	}
+	
 }

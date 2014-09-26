@@ -11,3 +11,6 @@ Commands:
 IMPORTANT: Stop all songs on onDisable();
 
 {\"text\":\"\",\"extra\":[{\"text\":\"%SONG_ID%\",\"color\":\"green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}},{\"text\":\": %SONG_NAME%\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}}]}
+
+
+"{\"text\":\"\",\"extra\":[{\"text\":\"%SONG_ID%\",\"color\":\"green\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}},{\"text\":\": %SONG_NAME%\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/play %SONG_ID%\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":{\"text\":\"Click to hear %SONG_NAME%\"}}}]}".replace("%SONG_NAME%", songs.get(i).getTitle()).replace("%SONG_ID%", i + "")

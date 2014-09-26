@@ -1,8 +1,11 @@
 package de.music.player;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,11 +22,23 @@ public class Plugin extends JavaPlugin {
 	
 	public static HashMap<Player, SongPlayer> playing_songs = new HashMap<>();
 	public static HashMap<Song, String> listed_songs = new HashMap<>();
-		
+	
+	File config_file = new File("plugins/MusicPlayer/config.yml");
+	FileConfiguration file_config = YamlConfiguration.loadConfiguration(config_file);
+	
+	File lang_file = new File("plugins/MusicPlayer/lang.yml");
+	FileConfiguration file_lang = YamlConfiguration.loadConfiguration(config_file);
+	
 	DestroyEvent destroyEvent;
 	
 	@Override
 	public void onEnable() {
+		
+		if(FileManager.checkConfig(this) == false){
+			FileManager.createConfig(this);
+		}
+		FileManager.loadConfig(this);
+		MessageManager.load(this);
 		
 		destroyEvent = new DestroyEvent(this);
 		listed_songs = SongManager.loadAllSongs();
