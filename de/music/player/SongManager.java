@@ -13,22 +13,22 @@ import de.music.player.api.methods.stopSong;
 
 public class SongManager {
 		
-	public static void playSong(Player p, Song s){
+	public void playSong(Player p, Song s){
 		playSong.start(s, p);
 	}
-	public static void stopSong(Player p){
+	public void stopSong(Player p){
 		stopSong.stop(p);
 	}
-	public static boolean checkSong(Player p){
+	public boolean checkSong(Player p){
 		if(checkSong.check(p) == true){
 			return true;
 		}
 		return false;
 	}
-	public static Song getSong(Player p, String songString){
+	public Song getSong(Player p, String songString){
 		return de.music.player.api.methods.getSong.get(p, songString);
 	}
-	public static HashMap<Song, String> loadAllSongs() {
+	public HashMap<Song, String> loadAllSongs() {
 		return getAllSongs.get();
 	}
 }

@@ -6,7 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 
 public class FileManager {
 	
-	public static void loadConfig(Plugin plugin){
+	public void loadConfig(Plugin plugin){
 		try {
 			plugin.file_config.load(plugin.config_file);
 		} catch (IOException | InvalidConfigurationException e) {
@@ -18,7 +18,7 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	public static void saveConfig(Plugin plugin){
+	public void saveConfig(Plugin plugin){
 		try {
 			plugin.file_config.save(plugin.config_file);
 		} catch (IOException e) {
@@ -30,13 +30,13 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	public static boolean checkConfig(Plugin plugin){
+	public boolean checkConfig(Plugin plugin){
 		if(plugin.lang_file.exists() == true){
 			return true;
 		}
 		return false;
 	}
-	public static void createConfig(Plugin plugin) {
+	public void createConfig(Plugin plugin) {
 		plugin.file_lang.set("error.song.not_found", "&cError: The Song: %SONG% was not found! Please check!");
 		plugin.file_lang.set("error.music.disabled", "&cError: The Music was disabled! Please contact an Administrator!");
 		plugin.file_lang.set("error.no_permissions", "&cError: You do not have enough permissions to perform this command!");

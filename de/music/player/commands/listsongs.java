@@ -9,22 +9,26 @@ import org.bukkit.entity.Player;
 
 import com.xxmicloxx.NoteBlockAPI.Song;
 
-import de.music.player.MessageManager;
+import de.music.player.Plugin;
 import de.music.player.methods.listSongs;
 
-public class listsongs implements CommandExecutor {
+public class ListSongs implements CommandExecutor {
 			
+	public ListSongs(Plugin plugin) {
+		plugin.getCommand("listsongs").setExecutor(this);
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cL, String[] args) {
 		
 		if(sender.hasPermission("musicplayer.listsongs") == false){
-			sender.sendMessage(MessageManager.error_no_permissions);
+			sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 			return true;
 		}
 		
 		List<Song> songs = listSongs.getList();
 		
-		sender.sendMessage(MessageManager.music_all_songs);
+		sender.sendMessage(Plugin.plugin.mm.music_all_songs);
 		
 		for(int i = 0; i < songs.size(); i++){
 			if(sender instanceof Player){

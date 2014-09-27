@@ -1,6 +1,6 @@
 name: MusicPlayer
 author: President741
-version: 1.0.2
+version: 1.0.3
 depend: [NoteBlockAPI]
 
 main: de.music.player.Plugin
@@ -35,4 +35,6 @@ permissions:
   music.adminhelp:
     default: op
   music.userhelp:
+    default: op
+  music.playingsongs:
     default: op

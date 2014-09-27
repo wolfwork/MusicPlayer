@@ -8,7 +8,6 @@ import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
 import de.music.player.Plugin;
-import de.music.player.SongManager;
 
 public class playSong {
 	
@@ -24,11 +23,11 @@ public class playSong {
 		}
 	}
 	public void start(final Player p, Song s, int ticks){
-		SongManager.playSong(p, s);
+		Plugin.plugin.sm.playSong(p, s);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			@Override
 			public void run() {
-				SongManager.stopSong(p);
+				Plugin.plugin.sm.stopSong(p);
 			}
 		}, ticks);
 	}

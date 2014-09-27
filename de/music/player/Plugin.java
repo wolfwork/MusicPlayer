@@ -13,10 +13,10 @@ import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
 import de.music.player.api.events.DestroyEvent;
-import de.music.player.commands.listsongs;
-import de.music.player.commands.musicplayer;
-import de.music.player.commands.play;
-import de.music.player.commands.stopsong;
+import de.music.player.commands.ListSongs;
+import de.music.player.commands.MusicPlayer;
+import de.music.player.commands.Play;
+import de.music.player.commands.StopSong;
 
 public class Plugin extends JavaPlugin {
 	
@@ -29,35 +29,41 @@ public class Plugin extends JavaPlugin {
 	File lang_file = new File("plugins/MusicPlayer/lang.yml");
 	FileConfiguration file_lang = YamlConfiguration.loadConfiguration(config_file);
 	
-	DestroyEvent destroyEvent;
+	public DestroyEvent destroyEvent;
+	public MusicPlayer musicplayer;
+	public ListSongs listsongs;
+	public Play play;
+	public StopSong stopsong;
+	public SongManager sm;
+	public MessageManager mm;
+	public FileManager fm;
+	public static Plugin plugin;
 	
 	@Override
 	public void onEnable() {
-		
-		if(FileManager.checkConfig(this) == false){
-			FileManager.createConfig(this);
-		}
-		FileManager.loadConfig(this);
-		MessageManager.load(this);
-		
 		destroyEvent = new DestroyEvent(this);
-		listed_songs = SongManager.loadAllSongs();
+		musicplayer = new MusicPlayer(this);
+		listsongs = new ListSongs(this);
+		play = new Play(this);
+		stopsong = new StopSong(this);
 		
-		loadcommands();
+		sm = new SongManager();
+		mm = new MessageManager();
+		fm = new FileManager();
+		plugin = this;
 		
+		if(fm.checkConfig(this) == false){
+			fm.createConfig(this);
+		}
+		fm.loadConfig(this);
+		mm.load(this);
+		
+		listed_songs = sm.loadAllSongs();
 	}
 	@Override
 	public void onDisable(){
 		for(Entry<Player, SongPlayer> songs : playing_songs.entrySet()){
-			SongManager.stopSong(songs.getKey());
+			sm.stopSong(songs.getKey());
 		}
-	}
-	
-	
-	private void loadcommands() {
-		this.getCommand("musicplayer").setExecutor(new musicplayer());
-		this.getCommand("listsongs").setExecutor(new listsongs());
-		this.getCommand("play").setExecutor(new play());
-		this.getCommand("stopsong").setExecutor(new stopsong());
 	}
 }

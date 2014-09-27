@@ -5,31 +5,33 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import de.music.player.MessageManager;
 import de.music.player.Plugin;
-import de.music.player.SongManager;
 
-public class stopsong implements CommandExecutor {
+public class StopSong implements CommandExecutor {
 	
+	public StopSong(Plugin plugin) {
+		plugin.getCommand("stopsong").setExecutor(this);
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cL, String[] args) {
 		
 		if(sender.hasPermission("musicplayer.play") == false){
-			sender.sendMessage(MessageManager.error_no_permissions);
+			sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 			return true;
 		}
 		
 		if(sender instanceof Player){
 			Player p = (Player) sender;
-			if(SongManager.checkSong(p) == true){
-				SongManager.stopSong(p);
+			if(Plugin.plugin.sm.checkSong(p) == true){
+				Plugin.plugin.sm.stopSong(p);
 				if(Plugin.playing_songs.containsKey(p)){
 					Plugin.playing_songs.remove(p);
 				}
-				p.sendMessage(MessageManager.music_stopped);
+				p.sendMessage(Plugin.plugin.mm.music_stopped);
 				return true;
 			}
-			p.sendMessage(MessageManager.error_no_music_to_stop);
+			p.sendMessage(Plugin.plugin.mm.error_no_music_to_stop);
 		}
 		
 		return false;
