@@ -11,27 +11,36 @@ import org.bukkit.entity.Player;
 import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
-import de.music.player.MessageManager;
 import de.music.player.Plugin;
-import de.music.player.SongManager;
 import de.music.player.methods.listSongs;
 
-public class musicplayer implements CommandExecutor {
+public class MusicPlayer implements CommandExecutor {
 	
-	static boolean music_enabled_boolean = true;
+	boolean music_enabled_boolean = true;
 	
+	public MusicPlayer(Plugin plugin) {
+		plugin.getCommand("musicplayer").setExecutor(this);
+	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String cL, String[] args) {
 		
 		if(args.length == 1){
-//			reloadsongs / list / disableMusic / enableMusic / stopall
+//			reloadsongs / list / disableMusic / enableMusic / stopall / PlayingSongs
 			
+			if(args[0].equalsIgnoreCase("playingsongs")){
+				if(sender.hasPermission("music.playingsongs")){
+					playingsongs(sender);
+					return true;
+				}
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
+				return true;
+			}
 			if(args[0].equalsIgnoreCase("reloadsongs")){ 
 				if(sender.hasPermission("music.reloadsongs")){
 					reloadSongs(sender);
 					return true;
 				}
-				sender.sendMessage(MessageManager.error_no_permissions);
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("listsongs")){
@@ -39,7 +48,7 @@ public class musicplayer implements CommandExecutor {
 					listSongs(sender);
 					return true;
 				}
-				sender.sendMessage(MessageManager.error_no_permissions);
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("disableMusic")){
@@ -47,7 +56,7 @@ public class musicplayer implements CommandExecutor {
 					disableMusic(sender);
 					return true;
 				}
-				sender.sendMessage(MessageManager.error_no_permissions);
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("enableMusic")){
@@ -55,7 +64,7 @@ public class musicplayer implements CommandExecutor {
 					enableMusic(sender);
 					return true;
 				}
-				sender.sendMessage(MessageManager.error_no_permissions);
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 				return true;
 			}
 			if(args[0].equalsIgnoreCase("stopall")){
@@ -64,7 +73,7 @@ public class musicplayer implements CommandExecutor {
 					return true;
 				}
 				
-				sender.sendMessage(MessageManager.error_no_permissions);
+				sender.sendMessage(Plugin.plugin.mm.error_no_permissions);
 				return true;
 			}
 			
@@ -76,46 +85,52 @@ public class musicplayer implements CommandExecutor {
 			
 		} else {
 			if(sender.hasPermission("musicplayer.adminhelp")){
-				sender.sendMessage(MessageManager.help_a1);
-				sender.sendMessage(MessageManager.help_a2);
-				sender.sendMessage(MessageManager.help_a3);
-				sender.sendMessage(MessageManager.help_a4);
-				sender.sendMessage(MessageManager.help_a5);
-				sender.sendMessage(MessageManager.help_a9);
-				sender.sendMessage(MessageManager.help_u1);
-				sender.sendMessage(MessageManager.help_u2);
-				sender.sendMessage(MessageManager.help_u3);
-				sender.sendMessage(MessageManager.help_u4);
+				sender.sendMessage(Plugin.plugin.mm.help_a1);
+				sender.sendMessage(Plugin.plugin.mm.help_a2);
+				sender.sendMessage(Plugin.plugin.mm.help_a3);
+				sender.sendMessage(Plugin.plugin.mm.help_a4);
+				sender.sendMessage(Plugin.plugin.mm.help_a5);
+				sender.sendMessage(Plugin.plugin.mm.help_a6);
+				sender.sendMessage(Plugin.plugin.mm.help_a7);
+				sender.sendMessage(Plugin.plugin.mm.help_u1);
+				sender.sendMessage(Plugin.plugin.mm.help_u2);
+				sender.sendMessage(Plugin.plugin.mm.help_u3);
+				sender.sendMessage(Plugin.plugin.mm.help_u4);
 				return true;
 			}else if(sender.hasPermission("musicplayer.userhelp")){
-				sender.sendMessage(MessageManager.help_u1);
-				sender.sendMessage(MessageManager.help_u2);
-				sender.sendMessage(MessageManager.help_u3);
-				sender.sendMessage(MessageManager.help_u4);
+				sender.sendMessage(Plugin.plugin.mm.help_u1);
+				sender.sendMessage(Plugin.plugin.mm.help_u2);
+				sender.sendMessage(Plugin.plugin.mm.help_u3);
+				sender.sendMessage(Plugin.plugin.mm.help_u4);
 				return true;
 			}
 		}
 		
 		return false;
 	}
+	private void playingsongs(CommandSender sender) {
+		for(Entry<Player, SongPlayer> songs : Plugin.playing_songs.entrySet()){
+			sender.sendMessage("§a" + songs.getKey().getName() + "§f: " + songs.getValue().getSong().getTitle());
+		}
+	}
 	private void enableMusic(CommandSender sender) {
 		music_enabled_boolean = true;
-		sender.sendMessage(MessageManager.music_enabled);
+		sender.sendMessage(Plugin.plugin.mm.music_enabled);
 	}
 	private void stopall() {
 		for(Entry<Player, SongPlayer> songs : Plugin.playing_songs.entrySet()){
-			SongManager.stopSong(songs.getKey());
+			Plugin.plugin.sm.stopSong(songs.getKey());
 		}
 	}
 	private void disableMusic(CommandSender sender) {
 		stopall();
 		music_enabled_boolean = false;
-		sender.sendMessage(MessageManager.music_disabled);
+		sender.sendMessage(Plugin.plugin.mm.music_disabled);
 	}
 	public static void listSongs(CommandSender sender) {
 		List<Song> songs = listSongs.getList();
 		
-		sender.sendMessage(MessageManager.music_all_songs);
+		sender.sendMessage(Plugin.plugin.mm.music_all_songs);
 		
 		for(int i = 0; i < songs.size(); i++){
 			if(sender instanceof Player){
@@ -127,7 +142,7 @@ public class musicplayer implements CommandExecutor {
 		}
 	}
 	private void reloadSongs(CommandSender sender) {
-		sender.sendMessage(MessageManager.reload_songs);
-		Plugin.listed_songs = SongManager.loadAllSongs();
+		sender.sendMessage(Plugin.plugin.mm.reload_songs);
+		Plugin.listed_songs = Plugin.plugin.sm.loadAllSongs();
 	}
 }
