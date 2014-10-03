@@ -1,7 +1,9 @@
 package de.music.player.api.methods;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import com.xxmicloxx.NoteBlockAPI.NoteBlockPlayerMain;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
 import de.music.player.Plugin;
@@ -14,6 +16,12 @@ public class stopSong {
 		sp.destroy();
 		if(Plugin.playing_songs.containsKey(p)){
 			Plugin.playing_songs.remove(p);
+		}
+	}
+
+	public static void destroyAll() {
+		for(Player p : Bukkit.getOnlinePlayers()){
+			NoteBlockPlayerMain.stopPlaying(p);
 		}
 	}
 }

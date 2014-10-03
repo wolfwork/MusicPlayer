@@ -1,18 +1,20 @@
 package de.music.player;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.metrics.Metrics;
 
 import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
 
 import de.music.player.api.events.DestroyEvent;
+import de.music.player.api.methods.stopSong;
 import de.music.player.commands.ListSongs;
 import de.music.player.commands.MusicPlayer;
 import de.music.player.commands.Play;
@@ -52,18 +54,24 @@ public class Plugin extends JavaPlugin {
 		fm = new FileManager();
 		plugin = this;
 		
-		if(fm.checkConfig(this) == false){
-			fm.createConfig(this);
+		if(fm.checkLANGConfig(this) == false){
+			fm.createLANGConfig(this);
 		}
 		fm.loadConfig(this);
 		mm.load(this);
+		
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		    System.out.println("[MusicPlayer] Enabled Plugin Metrics!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		listed_songs = sm.loadAllSongs();
 	}
 	@Override
 	public void onDisable(){
-		for(Entry<Player, SongPlayer> songs : playing_songs.entrySet()){
-			sm.stopSong(songs.getKey());
-		}
+		stopSong.destroyAll();
 	}
 }
