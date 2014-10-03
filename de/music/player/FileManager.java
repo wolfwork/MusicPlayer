@@ -30,13 +30,13 @@ public class FileManager {
 			e.printStackTrace();
 		}
 	}
-	public boolean checkConfig(Plugin plugin){
+	public boolean checkLANGConfig(Plugin plugin){
 		if(plugin.lang_file.exists() == true){
 			return true;
 		}
 		return false;
 	}
-	public void createConfig(Plugin plugin) {
+	public void createLANGConfig(Plugin plugin) {
 		plugin.file_lang.set("error.song.not_found", "&cError: The Song: %SONG% was not found! Please check!");
 		plugin.file_lang.set("error.music.disabled", "&cError: The Music was disabled! Please contact an Administrator!");
 		plugin.file_lang.set("error.no_permissions", "&cError: You do not have enough permissions to perform this command!");
@@ -50,5 +50,4 @@ public class FileManager {
 		plugin.file_lang.set("message.song_stopped", "&cThe music stopped!");
 		saveConfig(plugin);
 	}
-
 }
